@@ -1,0 +1,3 @@
+<ngx-toast-center></ngx-toast-center>
+<app-user-layout *ngIf="mode === 'user'" (switchMode)="modeSwitcher('admin')"></app-user-layout>
+<app-admin-layout *ngIf="mode === 'admin'" (switchMode)="modeSwitcher('user')"></app-admin-layout>

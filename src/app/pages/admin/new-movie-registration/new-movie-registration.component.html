@@ -1,0 +1,82 @@
+<div class="new-movie-form my-5 mx-auto">
+    <h2 class="mb-4 text-center">Add New Movie</h2>
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+      <!-- Title Field -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" formControlName="title" required>
+        <!-- Display feedback if the title is invalid and touched -->
+        <div class="invalid-feedback" *ngIf="movieForm.get('title')?.invalid && movieForm.get('title')?.touched">
+          Title is required.
+        </div>
+      </div>
+  
+      <!-- Description Field -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" rows="3" formControlName="description" required></textarea>
+        <!-- Display feedback if the description is invalid and touched -->
+        <div class="invalid-feedback" *ngIf="movieForm.get('description')?.invalid && movieForm.get('description')?.touched">
+          Description is required.
+        </div>
+      </div>
+  
+      <!-- Duration Field -->
+      <div class="mb-3">
+        <label for="duration" class="form-label">Duration (minutes)</label>
+        <input type="number" class="form-control" id="duration" formControlName="duration" required min="1">
+        <!-- Display feedback if the duration is invalid and touched -->
+        <div class="invalid-feedback" *ngIf="movieForm.get('duration')?.invalid && movieForm.get('duration')?.touched">
+          Duration is required and must be at least 1 minute.
+        </div>
+      </div>
+  
+      <!-- Release Date Field -->
+      <div class="mb-3">
+        <label for="releaseDate" class="form-label">Release Date</label>
+        <input type="date" class="form-control" id="releaseDate" formControlName="releaseDate" required>
+        <!-- Display feedback if the release date is invalid and touched -->
+        <div class="invalid-feedback" *ngIf="movieForm.get('releaseDate')?.invalid && movieForm.get('releaseDate')?.touched">
+          Release date is required.
+        </div>
+      </div>
+  
+      <!-- Genre Field (Form Array) -->
+      <div class="mb-3" formArrayName="genre">
+        <label class="form-label">Genre</label>
+        <div *ngFor="let genreControl of genreControls; let i = index" class="input-group mb-2">
+          <input type="text" class="form-control" [formControlName]="i" required>
+          <!-- Button to remove a genre -->
+          <button class="btn btn-outline-secondary" type="button" (click)="removeGenre(i)">Remove</button>
+        </div>
+        <!-- Button to add a new genre -->
+        <button class="btn btn-outline-primary" type="button" (click)="addGenre()">Add Genre</button>
+      </div>
+  
+      <!-- Language Field (Form Array) -->
+      <div class="mb-3" formArrayName="language">
+        <label class="form-label">Language</label>
+        <div *ngFor="let languageControl of languageControls; let i = index" class="input-group mb-2">
+          <input type="text" class="form-control" [formControlName]="i" required>
+          <!-- Button to remove a language -->
+          <button class="btn btn-outline-secondary" type="button" (click)="removeLanguage(i)">Remove</button>
+        </div>
+        <!-- Button to add a new language -->
+        <button class="btn btn-outline-primary" type="button" (click)="addLanguage()">Add Language</button>
+      </div>
+  
+      <!-- Poster Field -->
+      <div class="mb-3">
+        <label for="poster" class="form-label">Poster</label>
+        <input type="file" class="form-control" id="poster" (change)="onFileChange($event)" accept="image/*" required>
+        <!-- Display feedback if the poster is invalid and touched -->
+        <div class="invalid-feedback" *ngIf="movieForm.get('poster')?.invalid && movieForm.get('poster')?.touched">
+          Poster is required.
+        </div>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!movieForm.valid">Submit</button>
+    </form>
+  </div>
+  

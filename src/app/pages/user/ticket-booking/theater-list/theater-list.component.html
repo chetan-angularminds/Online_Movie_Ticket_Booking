@@ -1,0 +1,8 @@
+<div *ngIf="theaters.length > 0">
+    <h2>Select a Theater</h2>
+    <ul>
+      <li *ngFor="let theater of theaters">
+        <button (click)="onTheaterSelect(theater)">{{ theater.name }}</button>
+      </li>
+    </ul>
+  </div>

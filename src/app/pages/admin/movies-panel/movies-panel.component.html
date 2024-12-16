@@ -1,0 +1,5 @@
+<div class=" d-flex justify-content-end mt-5  px-4">
+    <button class="btn btn-primary" (click)="router.navigateByUrl('admin/add-new-movie')">Add Movie</button>
+</div>
+
+<app-movies-list-component [callFrom]="'admin'"></app-movies-list-component>

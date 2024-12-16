@@ -1,0 +1,50 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Search Your Movie Ticket Bookings</h2>
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="mb-4">
+      <div class="input-group">
+        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email address">
+        <button type="submit" class="btn btn-primary" [disabled]="searchForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Search
+        </button>
+      </div>
+      <div *ngIf="searchForm.get('email')?.invalid && searchForm.get('email')?.touched" class="text-danger mt-2">
+        Please enter a valid email address.
+      </div>
+    </form>
+  
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="bookings.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div *ngFor="let booking of bookings" class="col">
+        <div class="card h-100 booking-card">
+          <div class="card-body align-items-center">
+            <h5 class="card-title">{{ booking.show.title }}</h5>
+            <p class="card-text">
+              <strong>Date:</strong> {{ booking.show.date | date:'medium' }}<br>
+              <strong>Seats:</strong>
+              <span *ngFor="let seat of booking.seats; let last = last">
+                {{ rowName(seat.row) }}{{ seat.seatNumber }}{{ last ? '' : ', ' }}
+              </span><br>
+              <strong>Total Price:</strong> {{ booking.totalPrice | currency: 'INR' }}<br>
+              <strong>Booking Date:</strong> {{ booking.bookingDate | date:'fullDate' }}<br>
+              <strong>Booking Time:</strong> {{ booking.bookingDate | date:'mediumTime' }}<br>
+              <strong>Name:</strong> {{ booking.name }}<br>
+              <strong>Phone:</strong> {{ booking.phoneNumber }}
+            </p>
+            <div class="row justify-content-center">
+                <button class="btn btn-secondary" (click)="navigate(booking._id)">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="bookings.length === 0 && !isLoading && !error" class="text-center mt-4">
+      No bookings found for the provided email address.
+    </div>
+  </div>
+  
+  

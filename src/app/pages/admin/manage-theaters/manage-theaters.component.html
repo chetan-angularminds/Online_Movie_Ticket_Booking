@@ -1,0 +1,47 @@
+<div class="container mt-5">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Theater Details</h2>
+      </div>
+      <div class="card-body">
+        <div *ngIf="!isEditing && theater">
+          <h3>{{ theater.name }}</h3>
+          <p><strong>Seats Capacity:</strong> {{ theater.seatsCapacity }}</p>
+          <p><strong>Number of Rows:</strong> {{ theater.numberOfRows }}</p>
+          <p><strong>Seats per Row:</strong> {{ theater.seatsPerRow }}</p>
+          <p><strong>Address:</strong> {{ theater.address }}</p>
+          <p><strong>City:</strong> {{ theater.city }}</p>
+          <p><strong>Show Timings:</strong> {{ theater.showTimings.join(', ') }}</p>
+        </div>
+  
+        <form *ngIf="isEditing" [formGroup]="updateForm" (ngSubmit)="updateTheater()" class="mt-3">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+          <div class="mb-3">
+            <label for="numberOfRows" class="form-label">Number of Rows</label>
+            <input type="number" class="form-control" id="numberOfRows" formControlName="numberOfRows">
+          </div>
+          <div class="mb-3">
+            <label for="seatsPerRow" class="form-label">Seats per Row</label>
+            <input type="number" class="form-control" id="seatsPerRow" formControlName="seatsPerRow">
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" formControlName="address">
+          </div>
+          
+          <button type="submit" class="btn btn-primary me-2">Update</button>
+          <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
+        </form>
+  
+        <div class="mt-4">
+          <button *ngIf="!isEditing" class="btn btn-warning me-2" (click)="toggleEdit()">Edit</button>
+          <button class="btn btn-danger" (click)="deleteTheater()">Delete Theater</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

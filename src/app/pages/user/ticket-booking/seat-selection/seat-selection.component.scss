@@ -1,0 +1,17 @@
+.seat-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+.row-label {
+  margin-right: 10px;
+}
+button {
+  margin-right: 5px;
+}
+.selected {
+  background-color: #4caf50;
+}
+.booked {
+  background-color: #f44336;
+  color: white;
+}

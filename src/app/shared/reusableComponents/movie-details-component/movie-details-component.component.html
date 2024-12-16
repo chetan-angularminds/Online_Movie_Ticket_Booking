@@ -1,0 +1,35 @@
+<div class="container mt-4">
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="movie" class="row">
+      <div class="col-md-4 mb-4">
+        <img [src]="movie.poster" [alt]="movie.title" class="img-fluid rounded shadow movie-poster">
+      </div>
+      <div class="col-md-8">
+        <h1 class="mb-3">{{ movie.title }}</h1>
+        <p class="lead">{{ movie.description }}</p>
+        <div class="row mt-4">
+          <div class="col-sm-6">
+            <p><strong>Duration:</strong> {{ movie.duration }} minutes</p>
+            <p><strong>Release Date:</strong> {{ movie.releaseDate | date:'mediumDate' }}</p>
+          </div>
+          <div class="col-sm-6">
+            <p><strong>Genre:</strong> {{ movie.genre.join(', ') }}</p>
+            <p><strong>Language:</strong> {{ movie.language.join(', ') }}</p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <button class="btn btn-primary me-2">Watch Now</button>
+          <button class="btn btn-outline-secondary">Add to Watchlist</button>
+        </div>
+      </div>
+    </div>
+  </div>

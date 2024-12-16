@@ -1,0 +1,59 @@
+<div class="container mb-4">
+    <h1 class="mb-4">Movie List</h1>
+    
+    <!-- Search and Sort Controls -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="searchQuery" placeholder="Search movies...">
+          <button class="btn btn-primary" (click)="onSearch()">Search</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="btn-group float-end" role="group">
+          <button class="btn btn-outline-secondary" (click)="onSortChange('title')">
+            Sort by Title
+            <i class="bi" [ngClass]="{'bi-sort-alpha-down': sortBy === 'title' && sortOrder === 'asc', 'bi-sort-alpha-up': sortBy === 'title' && sortOrder === 'desc'}"></i>
+          </button>
+          <button class="btn btn-outline-secondary" (click)="onSortChange('releaseDate')">
+            Sort by Release Date
+            <i class="bi" [ngClass]="{'bi-sort-down': sortBy === 'releaseDate' && sortOrder === 'asc', 'bi-sort-up': sortBy === 'releaseDate' && sortOrder === 'desc'}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Movie Cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div class="col" *ngFor="let movie of movies">
+        <div class="card h-100 shadow movie-card" (click)="movieDetails(movie)">
+          <img [src]="movie.poster" class="card-img-top" [alt]="movie.title">
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <p class="card-text description">{{ movie.description }}</p>
+            <p class="card-text"><small class="text-muted">Duration: {{ movie.duration }} minutes</small></p>
+            <p class="card-text"><small class="text-muted">Release Date: {{ movie.releaseDate | date }}</small></p>
+            <p class="card-text"><small class="text-muted">Genre: {{ movie.genre.join(', ') }}</small></p>
+            <p class="card-text"><small class="text-muted">Language: {{ movie.language.join(', ') }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Pagination -->
+    <nav aria-label="Movie list pagination" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link"  (click)="onPageChange(currentPage - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
+          <a class="page-link text-dark"  (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link"  (click)="onPageChange(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+  

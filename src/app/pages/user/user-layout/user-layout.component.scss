@@ -1,0 +1,52 @@
+.custom-navbar {
+    background: linear-gradient(to right, #1a1a2e, #16213e) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  }
+  
+  .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #e94560 !important;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-brand:hover {
+    color: #ff6b6b !important;
+  }
+  
+  .nav-link {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    color: #f1f1f1 !important;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover, .nav-link.active {
+    color: #e94560 !important;
+  }
+  
+  .dropdown-menu {
+    background-color: #16213e;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+  }
+  
+  .dropdown-item {
+    color: #f1f1f1;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #e94560;
+    color: #fff;
+  }
+  
+  @media (max-width: 991px) {
+    .navbar-nav {
+      background-color: rgba(22, 33, 62, 0.95);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  }
+  
+  

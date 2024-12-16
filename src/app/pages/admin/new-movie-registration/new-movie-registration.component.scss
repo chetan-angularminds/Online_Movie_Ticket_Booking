@@ -1,0 +1,11 @@
+.ng-invalid:not(form).ng-touched {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    display: block;
+  }
+  
+.new-movie-form {
+    max-width: 600px;
+}  

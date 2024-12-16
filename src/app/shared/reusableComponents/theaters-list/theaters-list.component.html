@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <app-select-city-form *ngIf="selectedCity === ''" (citySelected)="citySelector($event)"></app-select-city-form>
+  
+    <div *ngIf="selectedCity !== ''">
+      <h2 class="mb-4">Theaters in {{ selectedCity }}</h2>
+  
+      <div *ngIf="loading" class="row">
+        <div *ngFor="let i of [1,2,3,4]" class="col-md-6 mb-4">
+          <div class="card shimmer">
+            <div class="card-body">
+              <h5 class="card-title shimmer-text"></h5>
+              <p class="card-text shimmer-text"></p>
+              <p class="card-text shimmer-text"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="!loading" class="row">
+        <div *ngFor="let theater of theaters" class="col-md-6 mb-4">
+          <div class="card theater-card" (click)="navigator(theater._id)">
+            <div class="card-body">
+              <h5 class="card-title">{{ theater.name }}</h5>
+              <p class="card-text text-truncate">Address: {{ theater.address }}</p>
+              <p class="card-text">Capacity: {{ theater.seatsCapacity }} seats</p>
+              <h6 class="mt-3">Show Timings:</h6>
+              <ul class="list-inline">
+                <li *ngFor="let timing of theater.showTimings" class="list-inline-item badge bg-primary me-2">{{ timing }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="!loading && theaters.length === 0" class="alert alert-info">
+        No theaters found in {{ selectedCity }}.
+      </div>
+    </div>
+  </div>
+  
+  

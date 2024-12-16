@@ -1,0 +1,18 @@
+<div *ngIf="seatLayout">
+    <h2>Select Seats</h2>
+    <div *ngFor="let row of seatLayout; let rowIndex = index" class="seat-row">
+      <span class="row-label">{{ rowText(rowIndex) }}</span>
+      <button
+        *ngFor="let seat of row; let seatIndex = index"
+        [disabled]="seat.isBooked"
+        [class.selected]="seat.isSelected"
+        [class.booked]="seat.isBooked"
+        (click)="toggleSeat(rowIndex, seatIndex)"
+      >
+        {{ seatIndex + 1 }}
+      </button>
+    </div>
+    <button (click)="confirmSelection()" [disabled]="selectedSeats.length === 0">
+      Confirm Selection
+    </button>
+  </div>

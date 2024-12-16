@@ -1,0 +1,95 @@
+<div class="movie-booking-container">
+    <h1>Movie Ticket Booking</h1>
+  
+    <app-select-city-form *ngIf="selectedCity === ''" (citySelected)="onCitySelected($event)"></app-select-city-form>
+  
+    <div *ngIf="selectedCity && !selectedTheater" class="section">
+      <h2>Select a Theater</h2>
+      <ul class="theater-list">
+        <li *ngFor="let theater of theaters" (click)="selectTheater(theater)" class="theater-item">
+          <h3>{{ theater.name }}</h3>
+          <p>{{ theater.address }}</p>
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="selectedTheater && !selectedDate" class="section">
+      <h2>Select a Date</h2>
+      <ul class="date-list">
+        <li *ngFor="let date of dates" (click)="selectDate(date.toISOString().split('T')[0])" class="date-item">
+          {{ date | date:'mediumDate' }}
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="selectedDate && !selectedTime" class="section">
+      <h2>Select a Show Time</h2>
+      <ul class="time-list">
+        <li *ngFor="let time of showTimes" (click)="selectTime(time._id)" class="time-item">
+          {{ time.showTime }}
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="selectedTime " class="section">
+      @if (!showUserForm()) {
+        <h2>Select Seats</h2>
+      <div class="seat-layout">
+        <div *ngFor="let row of seatLayout; let rowIndex = index" class="seat-row">
+          <span class="row-label">{{ rowName(rowIndex) }}</span>
+          <button
+            *ngFor="let seat of row; let seatIndex = index"
+            [disabled]="seat.isBooked"
+            [class.selected]="seat.isSelected"
+            [class.booked]="seat.isBooked"
+            (click)="toggleSeat(rowIndex, seatIndex)"
+            class="seat"
+          >
+            {{ seatIndex + 1 }}
+          </button>
+        </div>
+      </div>
+      }
+     
+        <div *ngIf="selectedSeats.length > 0 " class="booking-summary">
+            <p>Selected Seats: {{ selectedSeats.length }}</p>
+            <p>Total Price: {{ selectedSeats.length * selectedShow.seatPrice | currency : 'INR'}}</p>
+            <button (click)="showUserDetailsForm()" class="book-button" *ngIf="!showUserForm()">
+              Proceed to Book
+            </button>
+          </div>
+      
+        
+      
+      <div *ngIf="showUserForm()" class="user-details-form">
+        <h2>Enter Your Details</h2>
+        <form [formGroup]="userDetailsForm" (ngSubmit)="bookTickets()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" formControlName="name" required>
+            <div *ngIf="userDetailsForm.get('name')?.invalid && userDetailsForm.get('name')?.touched" class="error-message">
+              Name is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" required>
+            <div *ngIf="userDetailsForm.get('email')?.invalid && userDetailsForm.get('email')?.touched" class="error-message">
+              Please enter a valid email
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" formControlName="phoneNumber" required>
+            <div *ngIf="userDetailsForm.get('phoneNumber')?.invalid && userDetailsForm.get('phoneNumber')?.touched" class="error-message">
+              Please enter a valid 10-digit phone number
+            </div>
+          </div>
+          <button type="submit" [disabled]="userDetailsForm.invalid" class="book-button">
+            Book Tickets
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+

@@ -1,0 +1,6 @@
+<div *ngIf="showTimings.length > 0">
+    <h2>Select a Show Time</h2>
+    <button *ngFor="let time of showTimings" (click)="onTimeSelect(time)">
+      {{ time }}
+    </button>
+  </div>

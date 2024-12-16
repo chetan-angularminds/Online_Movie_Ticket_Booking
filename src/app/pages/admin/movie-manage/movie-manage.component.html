@@ -1,0 +1,70 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-end my-4 gap-3 px-4">
+      <button class="btn btn-primary" (click)="addShows()">Add Shows</button>
+      <button class="btn btn-secondary" (click)="viewShows()">View All Shows</button>
+      <button class="btn btn-warning update-btn" (click)="toggleUpdateForm()">Update Movie</button>
+      <button class="btn btn-danger" (click)="deleteMovie()">Delete Movie</button>
+    </div>
+  
+    <div *ngIf="showUpdateForm" class="update-form-container">
+      <h2 class="mb-4 text-center">Update Movie</h2>
+      <form [formGroup]="updateForm" (ngSubmit)="updateMovie()" class="needs-validation" novalidate>
+        <!-- Title Field -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" formControlName="title">
+        </div>
+  
+        <!-- Description Field -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+        </div>
+  
+        <!-- Duration Field -->
+        <div class="mb-3">
+          <label for="duration" class="form-label">Duration (minutes)</label>
+          <input type="number" class="form-control" id="duration" formControlName="duration" min="1">
+        </div>
+  
+        <!-- Release Date Field -->
+        <div class="mb-3">
+          <label for="releaseDate" class="form-label">Release Date</label>
+          <input type="date" class="form-control" id="releaseDate" formControlName="releaseDate">
+        </div>
+  
+        <!-- Genre Field (Form Array) -->
+        <div class="mb-3" formArrayName="genre">
+          <label class="form-label">Genre</label>
+          <div *ngFor="let genreControl of genreControls; let i = index" class="input-group mb-2">
+            <input type="text" class="form-control" [formControlName]="i">
+            <button class="btn btn-outline-secondary" type="button" (click)="removeGenre(i)">Remove</button>
+          </div>
+          <button class="btn btn-outline-primary" type="button" (click)="addGenre()">Add Genre</button>
+        </div>
+  
+        <!-- Language Field (Form Array) -->
+        <div class="mb-3" formArrayName="language">
+          <label class="form-label">Language</label>
+          <div *ngFor="let languageControl of languageControls; let i = index" class="input-group mb-2">
+            <input type="text" class="form-control" [formControlName]="i">
+            <button class="btn btn-outline-secondary" type="button" (click)="removeLanguage(i)">Remove</button>
+          </div>
+          <button class="btn btn-outline-primary" type="button" (click)="addLanguage()">Add Language</button>
+        </div>
+  
+        <!-- Poster Field -->
+        <div class="mb-3">
+          <label for="poster" class="form-label">Poster</label>
+          <input type="file" class="form-control" id="poster" (change)="onFileChange($event)" accept="image/*">
+        </div>
+  
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Update Movie</button>
+      </form>
+    </div>
+  
+    <app-movie-details-component *ngIf="!showUpdateForm"></app-movie-details-component>
+  </div>
+  
+  
