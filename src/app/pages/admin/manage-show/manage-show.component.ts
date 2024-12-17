@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpService } from '../../../core/services/httpService/http.service';
 
 
 @Component({
   selector: 'app-manage-show',
   standalone: true,
-  imports: [CommonModule  ],
+  imports: [CommonModule],
   templateUrl: './manage-show.component.html',
   styleUrl: './manage-show.component.scss'
 })
@@ -18,7 +18,7 @@ export class ManageShowComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private http: HttpService,
     private router: Router
   ) {}
 
@@ -33,7 +33,7 @@ export class ManageShowComponent implements OnInit {
   }
 
   fetchBulkShowDetails(bulkShowId: string) {
-    this.http.get<BulkShow>(`http://localhost:3000/api/shows/bulk/${bulkShowId}`).subscribe({
+    this.http.get<BulkShow>(`api/shows/bulk/${bulkShowId}`).subscribe({
       next: (data) => {
         this.bulkShow = data;
         this.loading = false;
@@ -49,10 +49,10 @@ export class ManageShowComponent implements OnInit {
   deleteShow() {
     if (this.bulkShow) {
       if (confirm('Are you sure you want to delete this show?')) {
-        this.http.delete(`http://localhost:3000/bulk/${this.bulkShow._id}`).subscribe({
+        this.http.delete(`api/shows/bulk/${this.bulkShow._id}`).subscribe({
           next: () => {
             alert('Show deleted successfully');
-            this.router.navigate(['/bulk-shows']); // Assuming you have a list page
+            this.router.navigate(['/admin/movie-shows']);
           },
           error: (err) => {
             alert('Failed to delete the show');
@@ -61,6 +61,9 @@ export class ManageShowComponent implements OnInit {
         });
       }
     }
+  }
+  navigator(theaterId: string){
+    this.router.navigateByUrl((`/admin/individual-shows/${this.bulkShow?._id}/${theaterId}`))
   }
 
 }

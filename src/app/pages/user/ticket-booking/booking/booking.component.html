@@ -2,8 +2,13 @@
     <h1>Movie Ticket Booking</h1>
   
     <app-select-city-form *ngIf="selectedCity === ''" (citySelected)="onCitySelected($event)"></app-select-city-form>
-  
-    <div *ngIf="selectedCity && !selectedTheater" class="section">
+    <div *ngIf="isLoadingTheatres" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading Theatre List...</p>
+    </div>
+    <div *ngIf="selectedCity && !selectedTheater && !isLoadingTheatres" class="section">
       <h2>Select a Theater</h2>
       <ul class="theater-list">
         <li *ngFor="let theater of theaters" (click)="selectTheater(theater)" class="theater-item">
@@ -12,8 +17,13 @@
         </li>
       </ul>
     </div>
-  
-    <div *ngIf="selectedTheater && !selectedDate" class="section">
+    <div *ngIf="isLoadingDates" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading Shows...</p>
+    </div>
+    <div *ngIf="selectedTheater && !selectedDate && !isLoadingDates" class="section">
       <h2>Select a Date</h2>
       <ul class="date-list">
         <li *ngFor="let date of dates" (click)="selectDate(date.toISOString().split('T')[0])" class="date-item">
@@ -21,8 +31,13 @@
         </li>
       </ul>
     </div>
-  
-    <div *ngIf="selectedDate && !selectedTime" class="section">
+    <div *ngIf="isLoadingTimings" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading Shows...</p>
+    </div>
+    <div *ngIf="selectedDate && !selectedTime && !isLoadingTimings" class="section">
       <h2>Select a Show Time</h2>
       <ul class="time-list">
         <li *ngFor="let time of showTimes" (click)="selectTime(time._id)" class="time-item">
@@ -30,8 +45,13 @@
         </li>
       </ul>
     </div>
-  
-    <div *ngIf="selectedTime " class="section">
+    <div *ngIf="isLoadingSeatsLayout" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading Shows...</p>
+    </div>
+    <div *ngIf="selectedTime && !isLoadingSeatsLayout" class="section">
       @if (!showUserForm()) {
         <h2>Select Seats</h2>
       <div class="seat-layout">
@@ -45,7 +65,7 @@
             (click)="toggleSeat(rowIndex, seatIndex)"
             class="seat"
           >
-            {{ seatIndex + 1 }}
+            {{rowName(rowIndex)}}{{ seatIndex + 1 }}
           </button>
         </div>
       </div>

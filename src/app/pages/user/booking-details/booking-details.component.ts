@@ -1,8 +1,8 @@
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HttpService } from '../../../core/services/httpService/http.service';
 
 @Component({
   selector: 'app-booking-details',
@@ -20,7 +20,7 @@ export class BookingDetailsComponent {
   }
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private http: HttpService,
     private ngxToastService: NgxToastService
   ) { this.ngxToastService.setPosition(NgxToastPosition.TOP_CENTER);}
 
@@ -32,7 +32,7 @@ export class BookingDetailsComponent {
   }
 
   fetchBookingDetails(id: string): void {
-    this.http.get<Booking>(`http://localhost:3000/api/bookings/${id}`)
+    this.http.get<Booking>(`api/bookings/${id}`)
       .subscribe({
         next: (data) => {
           this.booking = data;
@@ -59,7 +59,6 @@ interface Seat {
 interface Show {
   _id: string;
   title: string;
-  // Add other show properties as needed
 }
 
 interface Booking {

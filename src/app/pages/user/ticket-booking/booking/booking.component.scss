@@ -58,12 +58,27 @@
     font-size: 12px;
     cursor: pointer;
   }
-  
+  .seat {
+    width: 30px;
+    height: 30px;
+    margin: 0 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #28a745;
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
   .seat:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
-  
+  .seat:hover {
+    transform: scale(1.1);
+  }
   .seat.selected {
     background-color: #2196F3;
   }
@@ -169,3 +184,11 @@
   }
 }
 
+@media (max-width: 768px) {
+
+  .seat {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+}

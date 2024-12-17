@@ -1,11 +1,11 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLinkActive, RouterLink],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.scss'
 })

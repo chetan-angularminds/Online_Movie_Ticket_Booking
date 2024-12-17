@@ -15,6 +15,7 @@ export class MovieShowsListComponent {
   shows: Show[] = [];
   movieId: string = '';
   router = inject(Router)
+  loading = false;
   constructor(
     private route: ActivatedRoute,
     private httpService: HttpService,
@@ -29,11 +30,12 @@ export class MovieShowsListComponent {
   }
 
   loadShows(): void {
+    this.loading = true;
     this.httpService.get(`api/shows/bulk/movie/${this.movieId}`).subscribe({
       next: (data: any) => {
         this.shows = data;
         console.log(data);
-        
+        this.loading = false;
       },
       error: (error) => {
         console.error('Error fetching shows:', error);
@@ -58,13 +60,4 @@ export interface Show {
   seatPrice: number;
   startDate: Date;
   endDate: Date;
-  // Additional fields that might be in the response
-  theaterDetails?: {
-    name: string;
-    location: string;
-  }[];
-  movieDetails?: {
-    title: string;
-    duration: number;
-  };
 }

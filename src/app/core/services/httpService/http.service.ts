@@ -6,7 +6,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class HttpService {
-  private API_HOST_URL = 'http://localhost:3000';
+  private API_HOST_URL = 'https://movie-ticket-booking-backend-mjx1.onrender.com';
   constructor(private http: HttpClient) {}
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage: string;

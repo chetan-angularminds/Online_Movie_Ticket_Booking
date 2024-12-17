@@ -1,9 +1,9 @@
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpService } from '../../../core/services/httpService/http.service';
 
 @Component({
   selector: 'app-manage-theaters',
@@ -20,7 +20,7 @@ export class ManageTheatersComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private http: HttpService,
     private fb: FormBuilder,
     private router: Router,
     private ngxToastService: NgxToastService
@@ -35,7 +35,7 @@ export class ManageTheatersComponent {
   }
 
   fetchTheaterDetails() {
-    this.http.get<Theater>(`http://localhost:3000/api/theaters/${this.theaterId}`).subscribe(
+    this.http.get<Theater>(`api/theaters/${this.theaterId}`).subscribe(
       (data) => {
         this.theater = data;
         this.updateForm.patchValue(this.theater);
@@ -69,7 +69,7 @@ export class ManageTheatersComponent {
     if (this.updateForm.valid) {
       const updatedTheater = this.updateForm.value;
       const theaterData = { seatsCapacity: updatedTheater.numberOfRows * updatedTheater.seatsPerRow, ...updatedTheater}
-      this.http.patch(`http://localhost:3000/api/theaters/${this.theaterId}`, theaterData).subscribe(
+      this.http.patchWithFormData(`api/theaters/${this.theaterId}`, theaterData).subscribe(
         (response) => {
           console.log('Theater updated successfully');
           this.fetchTheaterDetails();
@@ -91,10 +91,10 @@ export class ManageTheatersComponent {
 
   deleteTheater() {
     if (confirm('Are you sure you want to delete this theater?')) {
-      this.http.delete(`http://localhost:3000/api/theaters/${this.theaterId}`).subscribe(
+      this.http.delete(`api/theaters/${this.theaterId}`).subscribe(
         (response) => {
           console.log('Theater deleted successfully');
-          this.router.navigate(['/admin/theaters']); // Assuming you have a theaters list page
+          this.router.navigate(['/admin/theaters']); 
         },
         (error) => console.error('Error deleting theater:', error)
       );

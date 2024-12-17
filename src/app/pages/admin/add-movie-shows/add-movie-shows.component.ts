@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { Movie, Show, Theater } from '../../../core/interfaces/movie.interface';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from '../../../core/services/httpService/http.service';
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';
@@ -124,7 +122,6 @@ export class AddMovieShowsComponent {
           console.log('Shows created successfully:', response);
           this.isSubmitting = false;
           this.showSuccess('Shows created successfully');
-          // Handle success (e.g., navigate to a different page)
           this.ngxToastService.success({
             title: 'Success',
             messages: ['Shows created successfully!'],
@@ -153,12 +150,12 @@ export class AddMovieShowsComponent {
   }
 
   showSuccess(message: string) {
-    // Implement a success message display method (e.g., using a Bootstrap alert)
+    
     console.log('Success:', message);
   }
 
   showError(message: string) {
-    // Implement an error message display method (e.g., using a Bootstrap alert)
+    
     console.error('Error:', message);
   }
 

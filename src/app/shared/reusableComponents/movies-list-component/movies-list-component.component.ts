@@ -17,7 +17,7 @@ export class MoviesListComponentComponent implements OnInit {
   @Input() callFrom: string = 'user';
   movies: Movie[] = [];
   router = inject(Router);
-  
+  loading = false
   // Pagination
   currentPage: number = 1;
   totalPages: number = 1;
@@ -39,6 +39,7 @@ export class MoviesListComponentComponent implements OnInit {
   }
 
   loadMovies(): void {
+    this.loading = true;
     const params = {
       page: this.currentPage,
       limit: this.limit,
@@ -53,6 +54,7 @@ export class MoviesListComponentComponent implements OnInit {
         this.totalPages = data.totalPages;
         this.currentPage = data.currentPage;
         console.log(data);
+        this.loading = false;
         
       },
       (error) => {

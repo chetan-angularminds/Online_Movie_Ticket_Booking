@@ -7,7 +7,7 @@ import { Booking } from '../../../pages/user/my-bookings/my-bookings.component';
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://movie-ticket-booking-backend-mjx1.onrender.com';
 
   constructor(private http: HttpClient) {}
 

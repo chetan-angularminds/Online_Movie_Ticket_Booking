@@ -12,6 +12,12 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   }
+  .card-address {
+    height: 20px; /* Adjust height based on your layout */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   
   .card-title {
     color: #0056b3;

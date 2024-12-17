@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { SelectCityFormComponent } from "../../../../shared/reusableComponents/select-city-form/select-city-form.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';
+import { HttpService } from '../../../../core/services/httpService/http.service';
 
 @Component({
   selector: 'app-booking',
@@ -28,9 +28,14 @@ export class BookingComponent implements OnInit{
   userDetailsForm: FormGroup;
   showUserForm=  signal<boolean>(false);
   router = inject(Router);
+
+  isLoadingTheatres = false;
+  isLoadingDates = false;
+  isLoadingTimings = false;
+  isLoadingSeatsLayout = false;
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private http: HttpService,
     private fb: FormBuilder,
     private ngxToastService: NgxToastService
   ) {
@@ -57,7 +62,8 @@ export class BookingComponent implements OnInit{
   }
 
   loadTheaters() {
-    this.http.get<any[]>(`http://localhost:3000/api/shows/all/movie/${this.movieId}`).subscribe(
+    this.isLoadingTheatres = true;
+    this.http.get<any[]>(`api/shows/all/movie/${this.movieId}`).subscribe(
       (shows) => {
 
         console.log(shows);
@@ -65,7 +71,7 @@ export class BookingComponent implements OnInit{
 
         this.theaters = shows[0].theaters.filter((theater: any) => theater?.city == this.selectedCity)
           console.log(this.theaters);
-          
+          this.isLoadingTheatres = false;
       },
       (error) => {console.error('Error loading theaters:', error)
         this.ngxToastService.error({
@@ -82,7 +88,8 @@ export class BookingComponent implements OnInit{
   }
 
   loadDates() {
-    this.http.get<any>(`http://localhost:3000/api/shows/all/movie/${this.movieId}`).subscribe(
+    this.isLoadingDates = true;
+    this.http.get<any>(`api/shows/all/movie/${this.movieId}`).subscribe(
       (bulkShow) => {
         console.log(bulkShow);
         
@@ -95,6 +102,7 @@ export class BookingComponent implements OnInit{
           
         }
         this.dates = dates;
+        this.isLoadingDates= false;
       },
       (error) => {console.error('Error loading dates:', error)
         this.ngxToastService.error({
@@ -111,13 +119,15 @@ export class BookingComponent implements OnInit{
   }
 
   loadShowTimes() {
+    this.isLoadingTimings = true;
     console.log(this.selectTheater);
     
-    this.http.get<any[]>(`http://localhost:3000/api/shows/movie/${this.movieId}/date/${this.selectedDate}/theater/${this.selectedTheater._id}`).subscribe(
+    this.http.get<any[]>(`api/shows/movie/${this.movieId}/date/${this.selectedDate}/theater/${this.selectedTheater._id}`).subscribe(
       (shows) => {
         console.log(shows);
         
         this.showTimes = shows;
+        this.isLoadingTimings = false;
       },
       (error) => {console.error('Error loading show times:', error)
         this.ngxToastService.error({
@@ -126,7 +136,7 @@ export class BookingComponent implements OnInit{
         });
       }
     );
-    // this.showTimes = ['10:00', '14:00', '18:00'];
+   
   }
 
   selectTime(time: string) {
@@ -135,7 +145,8 @@ export class BookingComponent implements OnInit{
   }
 
   loadSeatLayout() {
-    this.http.get<any>(`http://localhost:3000/api/shows/${this.selectedTime}`).subscribe(
+    this.isLoadingSeatsLayout = true;
+    this.http.get<any>(`api/shows/${this.selectedTime}`).subscribe(
       (show) => {
         console.log(show);
         this.selectedShow = show
@@ -151,6 +162,7 @@ export class BookingComponent implements OnInit{
             isSelected: false
           }))
         );
+        this.isLoadingSeatsLayout = false;
       },
       (error) => {console.error('Error loading seat layout:', error)
         this.ngxToastService.error({
@@ -191,15 +203,15 @@ export class BookingComponent implements OnInit{
       };
       console.log(bookingData);
       
-      this.http.post('http://localhost:3000/api/bookings', bookingData).subscribe(
+      this.http.post('api/bookings', bookingData).subscribe(
         (response: any) => {
           console.log('Booking successful:', response);
-          // Handle successful booking (e.g., show confirmation, navigate to payment)
+          
           this.router.navigateByUrl(`booking-details/${response._id}`)
         },
         (error) => {
           console.error('Booking failed:', error);
-          // Handle booking error (e.g., show error message)
+          
           this.ngxToastService.error({
             title: 'Failed',
             messages: ['Seat Booking Failed!',`${error.message}`],

@@ -86,3 +86,10 @@
   }
 }
 
+.multi-line-truncate {
+  display: -webkit-box; /* Flexible box for webkit browsers */
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical; /* Vertical orientation for the box */
+  overflow: hidden; /* Hides overflowing content */
+  text-overflow: ellipsis; /* Adds ellipsis (...) */
+}

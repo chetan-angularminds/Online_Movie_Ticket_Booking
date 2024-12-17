@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Movie } from '../../../core/interfaces/movie.interface';
 import { ActivatedRoute } from '@angular/router';
-
 import { HttpService } from '../../../core/services/httpService/http.service';
 import { CommonModule } from '@angular/common';
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';

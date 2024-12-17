@@ -45,7 +45,6 @@ export class NewTheaterRegistrationComponent implements OnInit {
   onSubmit() {
     if (this.theaterForm.valid) {
       console.log(this.theaterForm.value);
-      // Here you would typically send the form data to a service
       const data = { ...this.theaterForm.value, city: this.selectedCity };
       this.http.post('api/theaters', data).subscribe(
         (data) => {

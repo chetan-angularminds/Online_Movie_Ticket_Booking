@@ -11,11 +11,12 @@
       </div>
       <div class="col-md-6">
         <div class="btn-group float-end" role="group">
-          <button class="btn btn-outline-secondary" (click)="onSortChange('title')">
+          <button class="btn btn-outline-secondary " [class.active]="sortBy === 'title'" (click)="onSortChange('title')">
             Sort by Title
             <i class="bi" [ngClass]="{'bi-sort-alpha-down': sortBy === 'title' && sortOrder === 'asc', 'bi-sort-alpha-up': sortBy === 'title' && sortOrder === 'desc'}"></i>
           </button>
-          <button class="btn btn-outline-secondary" (click)="onSortChange('releaseDate')">
+
+          <button class="btn btn-outline-secondary" [class.active]="sortBy === 'releaseDate'" (click)="onSortChange('releaseDate')">
             Sort by Release Date
             <i class="bi" [ngClass]="{'bi-sort-down': sortBy === 'releaseDate' && sortOrder === 'asc', 'bi-sort-up': sortBy === 'releaseDate' && sortOrder === 'desc'}"></i>
           </button>
@@ -23,14 +24,29 @@
       </div>
     </div>
   
+    <div *ngIf="loading" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div *ngFor="let i of [1,2,3,4]" class="col">
+        <div class="card h-100 shadow movie-card" >
+          <img [src]="'https://i.pinimg.com/originals/65/ba/48/65ba488626025cff82f091336fbf94bb.gif'" class="card-img-top shimmer" [alt]="">
+          <div class="card-body shimmer">
+            <h5 class="card-title placeholder"></h5>
+            <p class="card-text  multi-line-truncate placeholder"></p>
+            <p class="card-text placeholder"><small class="text-muted placeholder"></small></p>
+            <p class="card-text placeholder"><small class="text-muted placeholder"></small></p>
+            <p class="card-text placeholder"><small class="text-muted placeholder"></small></p>
+            <p class="card-text placeholder"><small class="text-muted placeholder"></small></p>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Movie Cards -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div *ngIf="!loading" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
       <div class="col" *ngFor="let movie of movies">
         <div class="card h-100 shadow movie-card" (click)="movieDetails(movie)">
           <img [src]="movie.poster" class="card-img-top" [alt]="movie.title">
           <div class="card-body">
             <h5 class="card-title">{{ movie.title }}</h5>
-            <p class="card-text description">{{ movie.description }}</p>
+            <p class="card-text  multi-line-truncate">{{ movie.description }}</p>
             <p class="card-text"><small class="text-muted">Duration: {{ movie.duration }} minutes</small></p>
             <p class="card-text"><small class="text-muted">Release Date: {{ movie.releaseDate | date }}</small></p>
             <p class="card-text"><small class="text-muted">Genre: {{ movie.genre.join(', ') }}</small></p>

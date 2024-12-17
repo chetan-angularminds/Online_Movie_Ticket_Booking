@@ -15,13 +15,14 @@ import { TheatersPanelComponent } from './pages/admin/theaters-panel/theaters-pa
 import { MovieShowsListComponent } from './pages/admin/movie-shows-list/movie-shows-list.component';
 import { ManageTheatersComponent } from './pages/admin/manage-theaters/manage-theaters.component';
 import { ManageShowComponent } from './pages/admin/manage-show/manage-show.component';
+import { IndividualShowsComponent } from './pages/admin/individual-shows/individual-shows.component';
 
 export const routes: Routes = [
     {
         path: '',
         children: [
             {
-                path:'',
+                path:'movies',
                 component: MoviesListComponentComponent
             },
             {
@@ -43,6 +44,11 @@ export const routes: Routes = [
             {
                 path: 'my-bookings',
                 component: MyBookingsComponent
+            },
+            {
+                path: '',
+                redirectTo: 'movies',
+                pathMatch: 'full'
             }
         ]
     },
@@ -84,6 +90,10 @@ export const routes: Routes = [
             {
                 path: 'manage-show/:id',
                 component: ManageShowComponent
+            },
+            {
+                path: 'individual-shows/:showId/:theaterId',
+                component: IndividualShowsComponent
             },
             {
                 path: '',

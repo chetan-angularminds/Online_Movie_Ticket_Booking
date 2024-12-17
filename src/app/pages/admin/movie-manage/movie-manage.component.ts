@@ -2,8 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MovieDetailsComponentComponent } from "../../../shared/reusableComponents/movie-details-component/movie-details-component.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxToastPosition, NgxToastService } from '@angular-magic/ngx-toast';
-import { HttpClient } from '@angular/common/http';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpService } from '../../../core/services/httpService/http.service';
 

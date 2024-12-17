@@ -1,0 +1,199 @@
+<div class="d-flex justify-content-start p-4">
+    <button class="btn btn-primary" (click)="goBack()">Back</button>
+</div>
+
+<div class="container mt-4">
+  <h2 class="mb-4">Show Details</h2>
+
+  <div *ngIf="isLoadingBulkShow" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading show information...</p>
+  </div>
+
+  <div
+    *ngIf="!isLoadingBulkShow && !selectedDate && !selectedShow"
+    class="date-selection"
+  >
+    <h3>Select a Date</h3>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2 justify-content-center">
+      <div *ngFor="let date of availableDates" class="col">
+        <button
+          class="btn btn-outline-primary w-100"
+          (click)="onDateSelect(date)"
+        >
+          {{ date | date : "mediumDate" }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoadingIndividualShows" class="text-center">
+    <div class="shimmer-container">
+      <div class="shimmer-block"></div>
+      <div class="shimmer-block"></div>
+      <div class="shimmer-block"></div>
+    </div>
+    <p class="mt-2">Loading available shows...</p>
+  </div>
+
+  <div
+    *ngIf="!isLoadingIndividualShows && selectedDate && !selectedShow"
+    class="show-selection"
+  >
+    <h3>Select a Show Time</h3>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2 justify-content-center">
+      <div *ngFor="let show of individualShows" class="col">
+        <button
+          class="btn btn-outline-secondary w-100"
+          (click)="onShowSelect(show)"
+        >
+          {{ show.showTime[0] }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoadingShowDetails" class="text-center">
+    <div class="spinner-grow text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading show details...</p>
+  </div>
+
+  <div *ngIf="!isLoadingShowDetails && selectedShow" class="show-details">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="movie-poster">
+          <img
+            [src]="selectedShow.movie.poster"
+            [alt]="selectedShow.movie.title"
+            class="img-fluid rounded shadow-lg"
+          />
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title text-primary">
+              {{ selectedShow.movie.title }}
+            </h2>
+            <p class="card-text">{{ selectedShow.movie.description }}</p>
+            <div class="row">
+              <div class="col-md-6">
+                <h4 class="text-secondary">Movie Details</h4>
+                <ul class="list-unstyled">
+                  <li>
+                    <strong>Duration:</strong>
+                    {{ selectedShow.movie.duration }} minutes
+                  </li>
+                  <li>
+                    <strong>Release Date:</strong>
+                    {{ selectedShow.movie.releaseDate | date : "mediumDate" }}
+                  </li>
+                  <li>
+                    <strong>Genre:</strong>
+                    {{ selectedShow.movie.genre.join(", ") }}
+                  </li>
+                  <li>
+                    <strong>Language:</strong>
+                    {{ selectedShow.movie.language.join(", ") }}
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h4 class="text-secondary">Show Details</h4>
+                <ul class="list-unstyled">
+                  <li>
+                    <strong>Date:</strong>
+                    {{ selectedShow.date | date : "fullDate" }}
+                  </li>
+                  <li><strong>Time:</strong> {{ selectedShow.showTime[0] }}</li>
+                  <li><strong>Price:</strong> ${{ selectedShow.seatPrice }}</li>
+                  <li>
+                    <strong>Available Seats:</strong>
+                    {{ selectedShow.availableSeats }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h3 class="card-title text-primary">Theater Information</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <h4 class="text-secondary">{{ selectedShow.theater.name }}</h4>
+                <p>
+                  {{ selectedShow.theater.address }},
+                  {{ selectedShow.theater.city }}
+                </p>
+                <ul class="list-unstyled">
+                  <li>
+                    <strong>Capacity:</strong>
+                    {{ selectedShow.theater.seatsCapacity }} seats
+                  </li>
+                  <li>
+                    <strong>Layout:</strong>
+                    {{ selectedShow.theater.numberOfRows }} rows,
+                    {{ selectedShow.theater.seatsPerRow }} seats per row
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h4 class="text-secondary">Show Timings</h4>
+                <div class="d-flex flex-wrap">
+                  <span
+                    *ngFor="let time of selectedShow.theater.showTimings"
+                    class="badge bg-primary me-2 mb-2"
+                    >{{ time }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-md-12">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h3 class="card-title text-primary">Seat Availability</h3>
+            <div class="seat-map">
+              <div
+                *ngFor="
+                  let row of [].constructor(selectedShow.theater.numberOfRows);
+                  let i = index
+                "
+                class="seat-row"
+              >
+                <div
+                  *ngFor="
+                    let seat of [].constructor(
+                      selectedShow.theater.seatsPerRow
+                    );
+                    let j = index
+                  "
+                  class="seat"
+                  [class.booked]="isSeatBooked(i + 1, j + 1)"
+                >
+                  {{ rowString(i) }}{{ j + 1 }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
