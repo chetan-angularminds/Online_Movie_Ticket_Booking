@@ -28,7 +28,7 @@ export class BookingComponent implements OnInit{
   userDetailsForm: FormGroup;
   showUserForm=  signal<boolean>(false);
   router = inject(Router);
-
+  error: any;
   isLoadingTheatres = false;
   isLoadingDates = false;
   isLoadingTimings = false;
@@ -78,12 +78,16 @@ export class BookingComponent implements OnInit{
             
           })
         })
+        if(shows.length <1){
+          this.error = "There Are No shows for this movie in the selected city!"
+        }
 
         // this.theaters = shows[0].theaters.filter((theater: any) => theater?.city == this.selectedCity)
           console.log(this.theaters);
           this.isLoadingTheatres = false;
       },
       (error) => {console.error('Error loading theaters:', error)
+        
         this.ngxToastService.error({
           title: 'Failed',
           messages: ['Unable to fetch theaters!',`${error.message}`],
