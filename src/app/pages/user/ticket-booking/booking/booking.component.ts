@@ -67,9 +67,19 @@ export class BookingComponent implements OnInit{
       (shows) => {
 
         console.log(shows);
-        
+        shows.forEach((show:any)=>{
+          const theatresData: any[] = show.theaters.filter((theater: any) => theater?.city == this.selectedCity)
+          theatresData.forEach((theater:any) => {
+            if (!this.theaters.some(obj => obj._id === theater._id)) {
+              this.theaters.push( theater);
+            } else {
+              console.log("Duplicate object, not adding.");
+            }
+            
+          })
+        })
 
-        this.theaters = shows[0].theaters.filter((theater: any) => theater?.city == this.selectedCity)
+        // this.theaters = shows[0].theaters.filter((theater: any) => theater?.city == this.selectedCity)
           console.log(this.theaters);
           this.isLoadingTheatres = false;
       },
@@ -89,18 +99,21 @@ export class BookingComponent implements OnInit{
 
   loadDates() {
     this.isLoadingDates = true;
-    this.http.get<any>(`api/shows/all/movie/${this.movieId}`).subscribe(
+    this.http.get<any>(`api/shows/all/theater/${this.selectedTheater._id}/movie/${this.movieId}`).subscribe(
       (bulkShow) => {
         console.log(bulkShow);
-        
-        const startDate = new Date(bulkShow[0].startDate);
-        const endDate = new Date(bulkShow[0].endDate);
-        const dates = [];
-        for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-          dates.push(new Date(d));
-          console.log(d);
+        let dates: any[] = [];
+        bulkShow.forEach((show: any)=>{
+          const startDate = new Date(show.startDate);
+          const endDate = new Date(show.endDate);
           
-        }
+          for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+            dates.push(new Date(d));
+            console.log(d);
+          
+          }
+        })
+        
         this.dates = dates;
         this.isLoadingDates= false;
       },

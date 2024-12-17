@@ -113,7 +113,7 @@ export class IndividualShowsComponent {
       this.individualShows = [];
       this.selectedDate = null;
     } else {
-      this.router.navigate(['/shows']);
+      this.router.navigate([`admin/manage-show/${this.showId}`]);
     }
   }
 
