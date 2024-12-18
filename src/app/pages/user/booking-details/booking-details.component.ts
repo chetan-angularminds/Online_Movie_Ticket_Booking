@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from '../../../core/services/httpService/http.service';
-// import { saveAs } from 'file-saver';
-// import html2canvas from 'html2canvas';
-// import { jsPDF } from 'jspdf';
 import html2pdf from 'html2pdf.js';
 
 @Component({
@@ -127,30 +124,3 @@ interface Booking {
   phoneNumber: string;
   bookingDate: string;
 }
-
-// downloadTicket(): void {
-//   const ticket = this.ticketCard.nativeElement;
-//   html2canvas(ticket, {
-//     allowTaint: true,
-//     useCORS: true,
-//     scale: 2
-//   }).then((canvas) => {
-//     canvas.toBlob((blob) => {
-//       if (blob) {
-//         saveAs(blob, 'movie-ticket.png');
-
-//       }
-//       const imgData = canvas.toDataURL('image/png');
-//       const pdf = new jsPDF('p', 'mm', 'a4');
-//     const imgProps = pdf.getImageProperties(imgData);
-//     const pdfWidth = pdf.internal.pageSize.getWidth();
-//     console.log(imgProps);
-
-//     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-//     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-//     pdf.save('movie-ticket.pdf');
-//     }
-
-//   );
-//   });
-// }
