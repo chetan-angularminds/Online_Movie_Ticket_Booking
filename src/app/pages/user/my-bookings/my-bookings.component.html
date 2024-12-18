@@ -2,7 +2,7 @@
     <h2 class="text-center mb-4">Search Your Movie Ticket Bookings</h2>
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="mb-4">
       <div class="input-group">
-        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email address">
+        <input type="email" class="form-control w-auto" formControlName="email" placeholder="Enter your email address">
         <button type="submit" class="btn btn-primary" [disabled]="searchForm.invalid || isLoading">
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Search
@@ -21,9 +21,11 @@
       <div *ngFor="let booking of bookings" class="col">
         <div class="card h-100 booking-card">
           <div class="card-body align-items-center">
-            <h5 class="card-title">{{ booking.show.title }}</h5>
+            <h5 class="card-title">{{ booking.show.movie.title }}</h5>
             <p class="card-text">
               <strong>Date:</strong> {{ booking.show.date | date:'medium' }}<br>
+              <strong>Theater:</strong> {{ booking.show.theater.name }},{{ booking.show.theater.city }}<br>
+              <strong>Theater Address:</strong> {{ booking.show.theater.address }}<br>
               <strong>Seats:</strong>
               <span *ngFor="let seat of booking.seats; let last = last">
                 {{ rowName(seat.row) }}{{ seat.seatNumber }}{{ last ? '' : ', ' }}

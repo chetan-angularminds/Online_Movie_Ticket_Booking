@@ -1,39 +1,89 @@
-<div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow-lg">
-          <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Booking Details</h2>
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-lg mb-4">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Booking Details</h2>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
-          <div class="card-body">
-            <div *ngIf="loading" class="text-center">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+
+          <div *ngIf="booking && !loading && !error">
+            <div class="row">
+              <div class="col-md-4">
+                <img [src]="booking.show.movie.poster" alt="{{ booking.show.movie.title }}" class="img-fluid rounded movie-poster">
+              </div>
+              <div class="col-md-8">
+                <h3 class="card-title text-primary">{{ booking.show.movie.title }}</h3>
+                <p class="card-text">{{ booking.show.movie.description }}</p>
+                <p><strong>Duration:</strong> {{ booking.show.movie.duration }} minutes</p>
+                <p><strong>Genre:</strong> {{ booking.show.movie.genre.join(', ') }}</p>
+                <p><strong>Language:</strong> {{ booking.show.movie.language.join(', ') }}</p>
+                <p><strong>Release Date:</strong> {{ booking.show.movie.releaseDate | date:'mediumDate' }}</p>
               </div>
             </div>
-  
-            <div *ngIf="error" class="alert alert-danger" role="alert">
-              {{ error }}
+
+            <hr>
+
+            <h4 class="mt-4 text-primary">Theater Information</h4>
+            <p><strong>Name:</strong> {{ booking.show.theater.name }}</p>
+            <p><strong>Address:</strong> {{ booking.show.theater.address }}</p>
+            <p><strong>City:</strong> {{ booking.show.theater.city }}</p>
+
+            <h4 class="mt-4 text-primary">Show Details</h4>
+            <p><strong>Date:</strong> {{ booking.show.date | date:'fullDate' }}</p>
+            <p><strong>Time:</strong> {{ booking.show.showTime[0] }}</p>
+
+            <h4 class="mt-4 text-primary">Booking Information</h4>
+            <p><strong>Booking ID:</strong> {{ booking._id }}</p>
+            <p><strong>Name:</strong> {{ booking.name }}</p>
+            <p><strong>Email:</strong> {{ booking.email }}</p>
+            <p><strong>Phone:</strong> {{ booking.phoneNumber }}</p>
+            <p><strong>Booking Date:</strong> {{ booking.bookingDate | date:'medium' }}</p>
+            <p><strong>Total Price:</strong> ${{ booking.totalPrice.toFixed(2) }}</p>
+
+            <h4 class="mt-4 text-primary">Seats</h4>
+            <ul class="list-group">
+              <li *ngFor="let seat of booking.seats" class="list-group-item">
+                {{ rowName(seat.row) }}{{ seat.seatNumber }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4" *ngIf="booking && !loading && !error">
+      <div class="card shadow-lg ticket-card" #ticketCard>
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Movie Ticket</h3>
+          <div class="text-center mb-3">
+            <div class="">
+              <img [src]="booking.show.movie.poster" [ngStyle]="{'background-image': 'url(' + booking.show.movie.poster + ')'}" alt="{{ booking.show.movie.title }}" class="img-fluid rounded movie-poster">
             </div>
-  
-            <div *ngIf="booking && !loading && !error">
-              <h3 class="card-title">{{ booking.show.title }}</h3>
-              <p class="card-text"><strong>Booking ID:</strong> {{ booking._id }}</p>
-              <p class="card-text"><strong>Name:</strong> {{ booking.name }}</p>
-              <p class="card-text"><strong>Email:</strong> {{ booking.email }}</p>
-              <p class="card-text"><strong>Phone:</strong> {{ booking.phoneNumber }}</p>
-              <p class="card-text"><strong>Booking Date:</strong> {{ booking.bookingDate | date:'medium' }}</p>
-              <p class="card-text"><strong>Total Price:</strong> {{ booking.totalPrice| currency: 'INR' }}</p>
-  
-              <h4 class="mt-4">Seats</h4>
-              <ul class="list-group">
-                <li *ngFor="let seat of booking.seats" class="list-group-item">
-                   {{ rowName(seat.row) }}{{ seat.seatNumber }}
-                </li>
-              </ul>
-            </div>
+          </div>
+          <h4 class="text-center">{{ booking.show.movie.title }}</h4>
+          <p class="text-center">{{ booking.show.date | date:'fullDate' }} at {{ booking.show.showTime[0] }}</p>
+          <p class="text-center">{{ booking.show.theater.name }}</p>
+          <p class="text-center"><strong>Seats:</strong> 
+            <span *ngFor="let seat of booking?.seats; let last = last">
+              {{ rowName(seat.row) }}{{ seat.seatNumber }}{{ last ? '' : ', ' }}
+            </span>
+          </p>
+          <div class="text-center mt-3">
+            <button class="btn btn-primary" (click)="downloadTicket()">Download Ticket</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+

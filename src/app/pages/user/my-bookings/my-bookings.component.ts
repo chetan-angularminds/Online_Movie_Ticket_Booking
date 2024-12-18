@@ -61,11 +61,7 @@ export class MyBookingsComponent {
 }
 export interface Booking {
   _id: string;
-  show: {
-    _id: string;
-    title: string;
-    date: Date;
-  };
+  show: any;
   seats: Array<{ row: number; seatNumber: number }>;
   totalPrice: number;
   bookingDate: Date;
