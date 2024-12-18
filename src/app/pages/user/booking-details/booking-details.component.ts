@@ -3,68 +3,83 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from '../../../core/services/httpService/http.service';
-import { saveAs } from 'file-saver';
-import html2canvas from 'html2canvas';
+// import { saveAs } from 'file-saver';
+// import html2canvas from 'html2canvas';
+// import { jsPDF } from 'jspdf';
+import html2pdf from 'html2pdf.js';
 
 @Component({
   selector: 'app-booking-details',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './booking-details.component.html',
-  styleUrl: './booking-details.component.scss'
+  styleUrl: './booking-details.component.scss',
 })
 export class BookingDetailsComponent {
   @ViewChild('ticketCard') ticketCard!: ElementRef;
-  
+
   booking: Booking | null = null;
   loading = true;
   error = '';
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpService
-  ) { }
+    private http: HttpService,
+    private ngxToastService: NgxToastService
+  ) {
+    this.ngxToastService.setPosition(NgxToastPosition.TOP_CENTER);
+  }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const id = params['id'];
       this.fetchBookingDetails(id);
     });
   }
-  rowName(rowIndex: any): string{
-    return String.fromCharCode(65 + rowIndex)
+  rowName(rowIndex: any): string {
+    return String.fromCharCode(65 + rowIndex);
   }
   fetchBookingDetails(id: string): void {
-    this.http.get<Booking>(`api/bookings/${id}`)
-      .subscribe({
-        next: (data) => {
-          this.booking = data;
-          this.loading = false;
-        },
-        error: (error) => {
-          this.error = 'Failed to load booking details. Please try again.';
-          this.loading = false;
-          console.error('Error fetching booking details:', error);
-        }
-      });
-  }
-
-  downloadTicket(): void {
-    const ticket = this.ticketCard.nativeElement;
-    html2canvas(ticket, {
-      allowTaint: true,
-      useCORS: true,
-      scale: 2
-    }).then((canvas) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, 'movie-ticket.png');
-        }
-      });
+    this.http.get<Booking>(`api/bookings/${id}`).subscribe({
+      next: (data) => {
+        this.booking = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = 'Failed to load booking details. Please try again.';
+        this.loading = false;
+        console.error('Error fetching booking details:', error);
+        this.ngxToastService.error({
+          title: 'Failed',
+          messages: ['Unable to fetch booking details!', `${error.message}`],
+        });
+      },
     });
   }
 
-
+  downloadTicket(): void {
+    try {
+      const ticket = this.ticketCard.nativeElement;
+      const options = {
+        margin: 1, // Margin in mm
+        filename: 'movie-ticket.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      };
+      // Use html2pdf to generate the PDF
+      html2pdf().set(options).from(ticket).save();
+      this.ngxToastService.success({
+        title: 'Success',
+        messages: ['Ticket Download Started!'],
+      });
+    } catch (error: any) {
+      this.ngxToastService.error({
+        title: 'Failed',
+        messages: ['Unable to Download ticket!',`${error.message}`],
+      });
+    }
+  }
 }
 interface Movie {
   _id: string;
@@ -113,3 +128,29 @@ interface Booking {
   bookingDate: string;
 }
 
+// downloadTicket(): void {
+//   const ticket = this.ticketCard.nativeElement;
+//   html2canvas(ticket, {
+//     allowTaint: true,
+//     useCORS: true,
+//     scale: 2
+//   }).then((canvas) => {
+//     canvas.toBlob((blob) => {
+//       if (blob) {
+//         saveAs(blob, 'movie-ticket.png');
+
+//       }
+//       const imgData = canvas.toDataURL('image/png');
+//       const pdf = new jsPDF('p', 'mm', 'a4');
+//     const imgProps = pdf.getImageProperties(imgData);
+//     const pdfWidth = pdf.internal.pageSize.getWidth();
+//     console.log(imgProps);
+
+//     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+//     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+//     pdf.save('movie-ticket.pdf');
+//     }
+
+//   );
+//   });
+// }
