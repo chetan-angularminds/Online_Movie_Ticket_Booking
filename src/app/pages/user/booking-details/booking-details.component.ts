@@ -60,7 +60,7 @@ export class BookingDetailsComponent {
       const options = {
         margin: 1, // Margin in mm
         filename: 'movie-ticket.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       };

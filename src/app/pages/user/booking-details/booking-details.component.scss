@@ -46,6 +46,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.text-lines-limiter {
+  height: 20px; /* Adjust height based on your layout */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .ticket-poster {
   width: 100%;
   height: 100%;

@@ -25,11 +25,13 @@
             <p class="card-text">
               <strong>Date:</strong> {{ booking.show.date | date:'medium' }}<br>
               <strong>Theater:</strong> {{ booking.show.theater.name }},{{ booking.show.theater.city }}<br>
-              <strong>Theater Address:</strong> {{ booking.show.theater.address }}<br>
+              <span class="multi-line-truncate"><strong>Theater Address:</strong> {{ booking.show.theater.address }}</span>
+              <span class="multi-line-truncate">
               <strong>Seats:</strong>
               <span *ngFor="let seat of booking.seats; let last = last">
                 {{ rowName(seat.row) }}{{ seat.seatNumber }}{{ last ? '' : ', ' }}
               </span><br>
+            </span>
               <strong>Total Price:</strong> {{ booking.totalPrice | currency: 'INR' }}<br>
               <strong>Booking Date:</strong> {{ booking.bookingDate | date:'fullDate' }}<br>
               <strong>Booking Time:</strong> {{ booking.bookingDate | date:'mediumTime' }}<br>

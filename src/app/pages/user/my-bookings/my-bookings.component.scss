@@ -33,6 +33,20 @@
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   }
+  .text-lines-limiter {
+    height: 40px; /* Adjust height based on your layout */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+  }
+  .multi-line-truncate {
+    display: -webkit-box; /* Flexible box for webkit browsers */
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    -webkit-box-orient: vertical; /* Vertical orientation for the box */
+    overflow: hidden; /* Hides overflowing content */
+    text-overflow: ellipsis; /* Adds ellipsis (...) */
+  }
+  
   
   @media (max-width: 767px) {
     .input-group {

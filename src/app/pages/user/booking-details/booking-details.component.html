@@ -51,7 +51,7 @@
             <p><strong>Total Price:</strong> ${{ booking.totalPrice.toFixed(2) }}</p>
 
             <h4 class="mt-4 text-primary">Seats</h4>
-            <ul class="list-group">
+            <ul class="list-group ">
               <li *ngFor="let seat of booking.seats" class="list-group-item">
                 {{ rowName(seat.row) }}{{ seat.seatNumber }}
               </li>
@@ -63,8 +63,12 @@
 
     <div class="col-lg-4" *ngIf="booking && !loading && !error">
       <div class="card shadow-lg ticket-card" #ticketCard>
+        <div class="card-header bg-primary text-white w-100">
+          <h3 class="mb-0">Movie Ticket</h3>
+        </div>
         <div class="card-body">
-          <h3 class="card-title text-center mb-4">Movie Ticket</h3>
+          
+          <!-- <h3 class="card-title text-center mb-4">Movie Ticket</h3> -->
           <div class="text-center mb-3">
             <div class="">
               <img [src]="booking.show.movie.poster" [ngStyle]="{'background-image': 'url(' + booking.show.movie.poster + ')'}" alt="{{ booking.show.movie.title }}" class="img-fluid rounded movie-poster">
